@@ -1,6 +1,6 @@
 lcdchargen
 ==========
-Custom 5x7 Character Generator for OLED and LCD Modules
+Custom Character Generator for OLED and LCD Modules
 
 This is a fork of [lcdchargen](https://github.com/omerk/lcdchargen) by @omerk.
 
