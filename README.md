@@ -1,25 +1,14 @@
 lcdchargen
 ==========
-Custom Character Generator for HD44780 LCD Modules
+Custom 5x7 Character Generator for OLED and LCD Modules
+
+This is a fork of [lcdchargen](https://github.com/omerk/lcdchargen) by @omerk.
 
 Usage
 -----
-The generator is available [here](http://omerk.github.com/lcdchargen/).
+The generator is available [here](https://jclehner.github.io/lcdchargen/).
 
 Click on the blocks to create a custom character which will automatically generate output.
-
-The example Arduino code generated defaults with the following connections:
-
-
-| LCD Module    | Arduino Pin   |
-| ------------- |:-------------:|
-| RS            | 12            |
-| RW            | GND           |
-| Enable        | 11            |
-| D4            | 5             |
-| D5            | 4             |
-| D6            | 3             |
-| D7            | 2             |
 
 License
 -------
