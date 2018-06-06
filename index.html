@@ -126,7 +126,7 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
         function generateOutput(data) {
         
             // Create output
-            var output = 'byte customChar[8] = {\n';
+            var output = 'byte lcdChar[8] = {\n';
             for (i = 0; i < 8; i++) {
                 output += '\t0b';
                 for (j = 0; j < 5; j++) {
@@ -136,6 +136,20 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
                     output += ',\n';
                 }
             }
+            output += '\n};\n\n';
+
+            output += 'byte oledChar[5] = {\n\t';
+            for (i = 0; i < 5; i++) {
+                var b = 0;
+                for (j = 0; j < 8; j++) {
+                    if (customchar[j][i]) {
+                        b |= (1 << j);
+                    }
+                }
+
+                output += '0x' + (b < 0x10 ? '0' : '') + b.toString(16) + ', ';
+            }
+
             output += '\n};';
 
             // Update the code display
