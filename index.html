@@ -9,13 +9,15 @@ can do whatever you want with this stuff. If we meet some day, and you think
 this stuff is worth it, you can buy me a beer in return. Omer Kilic
 ----------------------------------------------------------------------------
 
+Modified by Joseph C. Lehner <joseph.c.lehner@gmail.com>
+
 -->
 
 <html>
 
 <head>
     <meta charset=utf-8 />
-    <title>Custom 5x7 Character Generator for LCD and OLED Modules</title>
+    <title>Custom Character Generator for LCD and OLED Modules</title>
     <style type="text/css">
         body {
             text-align: center;
@@ -73,18 +75,20 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
+        var columns = 5;
+        var rows = 8;
     
         // Create a 2D array for the custom char
-        var customchar = new Array(8);
+        var customchar = new Array(rows);
         for (i = 0; i < 8; i++) {
-            customchar[i] = new Array(5);
+            customchar[i] = new Array(columns);
         }
 
         function clear() {
         
             // Clear array
-            for (i = 0; i < 8; i++) {
-                for (j = 0; j < 5; j++) {
+            for (i = 0; i < rows; i++) {
+                for (j = 0; j < columns; j++) {
                     customchar[i][j] = 0;
                 }
             }
@@ -121,13 +125,24 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
             });
         }
 
+        function generatePixels() {
+            for (i = 0; i < rows; i++) {
+                for (j = 0; j < columns; j++) {
+                    $('#canvas').append(
+                        $('<canvas/>', { id: 'pixel-' + i + '-' + j, class: 'pixel off' })
+                    );
+                }
+                $('#canvas').append($('<br/>'));
+            }
+        }
+
         function generateOutput(data) {
         
             // Create output
-            var output = 'byte lcdChar[8] = {\n';
-            for (i = 0; i < 8; i++) {
+            var output = 'byte lcdChar[' + rows + '] = {\n';
+            for (i = 0; i < rows; i++) {
                 output += '\t0b';
-                for (j = 0; j < 5; j++) {
+                for (j = 0; j < columns; j++) {
                     output += customchar[i][j];
                 }
                 if (i < 7) {
@@ -136,10 +151,10 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
             }
             output += '\n};\n\n';
 
-            output += 'byte oledChar[5] = {\n\t';
-            for (i = 0; i < 5; i++) {
+            output += 'byte oledChar[' + columns + '] = {\n\t';
+            for (i = 0; i < columns; i++) {
                 var b = 0;
-                for (j = 0; j < 8; j++) {
+                for (j = 0; j < rows; j++) {
                     if (customchar[j][i]) {
                         b |= (1 << j);
                     }
@@ -158,6 +173,7 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
         $(document).ready(function() {
         
             // Clear/initialise the pixels and array
+            generatePixels();
             clear();
             generateOutput();
 
@@ -206,54 +222,7 @@ this stuff is worth it, you can buy me a beer in return. Omer Kilic
     <div id="wrapper">
         <div id="pixels">
             <h2>Pixels</h2>
-            <canvas id="pixel-0-0" class="pixel off"></canvas>
-            <canvas id="pixel-0-1" class="pixel off"></canvas>
-            <canvas id="pixel-0-2" class="pixel off"></canvas>
-            <canvas id="pixel-0-3" class="pixel off"></canvas>
-            <canvas id="pixel-0-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-1-0" class="pixel off"></canvas>
-            <canvas id="pixel-1-1" class="pixel off"></canvas>
-            <canvas id="pixel-1-2" class="pixel off"></canvas>
-            <canvas id="pixel-1-3" class="pixel off"></canvas>
-            <canvas id="pixel-1-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-2-0" class="pixel off"></canvas>
-            <canvas id="pixel-2-1" class="pixel off"></canvas>
-            <canvas id="pixel-2-2" class="pixel off"></canvas>
-            <canvas id="pixel-2-3" class="pixel off"></canvas>
-            <canvas id="pixel-2-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-3-0" class="pixel off"></canvas>
-            <canvas id="pixel-3-1" class="pixel off"></canvas>
-            <canvas id="pixel-3-2" class="pixel off"></canvas>
-            <canvas id="pixel-3-3" class="pixel off"></canvas>
-            <canvas id="pixel-3-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-4-0" class="pixel off"></canvas>
-            <canvas id="pixel-4-1" class="pixel off"></canvas>
-            <canvas id="pixel-4-2" class="pixel off"></canvas>
-            <canvas id="pixel-4-3" class="pixel off"></canvas>
-            <canvas id="pixel-4-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-5-0" class="pixel off"></canvas>
-            <canvas id="pixel-5-1" class="pixel off"></canvas>
-            <canvas id="pixel-5-2" class="pixel off"></canvas>
-            <canvas id="pixel-5-3" class="pixel off"></canvas>
-            <canvas id="pixel-5-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-6-0" class="pixel off"></canvas>
-            <canvas id="pixel-6-1" class="pixel off"></canvas>
-            <canvas id="pixel-6-2" class="pixel off"></canvas>
-            <canvas id="pixel-6-3" class="pixel off"></canvas>
-            <canvas id="pixel-6-4" class="pixel off"></canvas>
-            <br />
-            <canvas id="pixel-7-0" class="pixel off"></canvas>
-            <canvas id="pixel-7-1" class="pixel off"></canvas>
-            <canvas id="pixel-7-2" class="pixel off"></canvas>
-            <canvas id="pixel-7-3" class="pixel off"></canvas>
-            <canvas id="pixel-7-4" class="pixel off"></canvas>
-            <br />
+            <div id="canvas"></div>
 
             <button id="clear" type="button">Clear</button>
             <button id="invert" type="button">Invert</button>
